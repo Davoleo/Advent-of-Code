@@ -14,7 +14,8 @@ public class Day2 {
 
     public static void main(String[] args) {
         try {
-            scanner = new Scanner(new File("2020/Day-2/input.txt"));
+            //scanner = new Scanner(new File("2020/Day-2/input.txt"));
+            scanner = new Scanner(new File("input.txt"));
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();
