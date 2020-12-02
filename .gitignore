@@ -1,2 +1,7 @@
+# IDEA Stuff
+.idea
+*.iml
+out
+
 # Built Files
 *.exe

@@ -1,5 +1,9 @@
 #include <stdio.h>
 
+/*-------------------*
+ *  Author: Davoleo  *
+ *-------------------*/
+
 void findNumbers(int[], int, int*, int*);
 void findNumbersPart2(int[], int, int*, int*, int*);
 
