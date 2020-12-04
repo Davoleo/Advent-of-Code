@@ -3,6 +3,9 @@
 *.iml
 out
 
+# VS Files
+.vs
+
 # Built Files
 *.exe
 *.class
