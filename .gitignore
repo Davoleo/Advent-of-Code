@@ -3,8 +3,11 @@
 *.iml
 out
 
-# VS Files
+# VS Folder
 .vs
+
+# VSCode Folder
+.vscode
 
 # Built Files
 *.exe

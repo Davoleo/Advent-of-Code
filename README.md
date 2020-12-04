@@ -10,6 +10,7 @@ Every day is coded in a different language
     - Day 1: **C**
     - Day 2: **Java**
     - Day 3: **C++**
+    - Day 4: **C#**
 
 ### Viewing solutions
 
