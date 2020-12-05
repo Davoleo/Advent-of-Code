@@ -11,6 +11,7 @@ Every day is coded in a different language
     - Day 2: **Java**
     - Day 3: **C++**
     - Day 4: **C#**
+    - Day 5: **JavaScript**
 
 ### Viewing solutions
 
