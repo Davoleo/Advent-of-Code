@@ -7,7 +7,6 @@ typealias BagBundle = Pair<String, Int>
 val file = File("input.txt")
 val lines = file.readLines()
 
-//Yes, a map would have done the work WAY better, but it's too late now
 val bagMap: MutableMap<String, List<BagBundle>> = mutableMapOf()
 
 lines.forEach { line ->
@@ -30,9 +29,9 @@ lines.forEach { line ->
 }
 
 var checked: MutableSet<String> = mutableSetOf()
-//do {
-//    val hasFinished = computeLevelOfBags(bagMap, checked)
-//} while (!hasFinished)
+do {
+    val hasFinished = computeLevelOfBags(bagMap, checked)
+} while (!hasFinished)
 println("The total number of bags that contain shiny gold bags is ${checked.size}")
 println(checked)
 println("------------------------------------------------------------------------")
@@ -40,10 +39,11 @@ val innerBags = countInnerBags("shiny gold", bagMap)
 println("The number of bags contained by one shiny gold bag is $innerBags")
 
 
-fun computeLevelOfBags(bagList: Map<String, List<BagBundle>>, checked: MutableSet<String>): Boolean {
+//This function was written before refactoring the List of bags into a map (hence why it's written so badly)
+fun computeLevelOfBags(bagMap: Map<String, List<BagBundle>>, checked: MutableSet<String>): Boolean {
 
     if (checked.isEmpty()) {
-        bagList.forEach { (color, bagChildren): Map.Entry<String, List<BagBundle>> ->
+        bagMap.forEach { (color, bagChildren): Map.Entry<String, List<BagBundle>> ->
             for (child in bagChildren) {
                 if (child.first == "shiny gold") {
                     checked.add(color)
@@ -56,7 +56,7 @@ fun computeLevelOfBags(bagList: Map<String, List<BagBundle>>, checked: MutableSe
         var hasNewItems = false
 
         val newBags = mutableSetOf<String>()
-        bagList.forEach { (color, bagChildren): Map.Entry<String, List<BagBundle>> ->
+        bagMap.forEach { (color, bagChildren): Map.Entry<String, List<BagBundle>> ->
             for (checkedBag in checked) {
                 for (child in bagChildren) {
                     if (child.first == checkedBag) {
