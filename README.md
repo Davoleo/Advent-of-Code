@@ -13,6 +13,8 @@ Every day has been coded in a different language
     - Day 4: **C#**
     - Day 5: **JavaScript**
     - Day 6: **Dart**
+    - Day 7: **Kotlin**
+    - Day 8: **Groovy**
     
 ### Viewing solutions
 
