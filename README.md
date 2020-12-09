@@ -15,6 +15,7 @@ Every day has been coded in a different language
     - Day 6: **Dart**
     - Day 7: **Kotlin**
     - Day 8: **Groovy**
+    - Day 9: **C**
     
 ### Viewing solutions
 
