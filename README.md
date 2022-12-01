@@ -2,20 +2,23 @@
 
 A simple repo to store my solutions to Advent of Code challenges
 
-Every day has been coded in a different language
-
 ### Years
 
-- 2020
-    - Day 1: **C**
-    - Day 2: **Java**
-    - Day 3: **C++**
-    - Day 4: **C#**
-    - Day 5: **JavaScript**
-    - Day 6: **Dart**
-    - Day 7: **Kotlin**
-    - Day 8: **Groovy**
-    - Day 9: **C**
+- 2020: 
+  - Note: Almost every daily challenge is written in a different language 
+  1. Day 1: **C**
+  2. Day 2: **Java**
+  3. Day 3: **C++**
+  4. Day 4: **C#**
+  5. Day 5: **JavaScript**
+  6. Day 6: **Dart**
+  7. Day 7: **Kotlin**
+  8. Day 8: **Groovy**
+  9. Day 9: **C**
+  10. Day 10: **Java**
+- 2022: 
+  - Note: Joined effort between @Davoleo @Zambodev @PierKnight to reach as far as possible in AoC with out limited time
+  1. Day 1: Written in JavaScript for NodeJS by @Davoleo
     
 ### Viewing solutions
 
