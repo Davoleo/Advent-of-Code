@@ -18,7 +18,8 @@ A simple repo to store my solutions to Advent of Code challenges
   10. Day 10: **Java**
 - 2022: 
   - Note: Joined effort between @Davoleo @Zambodev @PierKnight to reach as far as possible in AoC with out limited time
-  1. Day 1: Written in JavaScript for NodeJS by @Davoleo
+  1. Day 1: Written in JavaScript for NodeJS by Davoleo
+  2. Day 2: Written in Kotlin by Davoleo & PierKnight [2 Versions]
     
 ### Viewing solutions
 
