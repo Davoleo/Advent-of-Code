@@ -17,10 +17,12 @@ A simple repo to store my solutions to Advent of Code challenges
   9. Day 9: **C**
   10. Day 10: **Java**
 - 2022: 
-  - Note: Joined effort between @Davoleo @Zambodev @PierKnight to reach as far as possible in AoC with out limited time
+  - Note: Joined effort between [@Davoleo](https://github.com/Davoleo) [@Zambodev](https://github.com/zambodev) [@PierKnight](https://github.com/Pierknight) to reach as far as possible in AoC with out limited time
   1. Day 1: Written in JavaScript for NodeJS by Davoleo
   2. Day 2: Written in Kotlin by Davoleo & PierKnight [2 Versions]
   3. Day 3: Written in Kotlin by Davoleo
+  4. Day 4: Written in Kotlin by Davoleo
+  5. Day 5: Written in C++ by Zambo & Davoleo
     
 ### Viewing solutions
 
