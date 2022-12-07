@@ -82,19 +82,21 @@ int main() {
 
     fclose(file);
     
+    puts("--- Part 2 ---");
+
     file = fopen("input.txt", "r");
 
     char letters[14] = {0};
     char doubles[26] = {0};
     char position[26] = {0};
 
-    int fr = 14;
+    int free_count = 14;
     int idx = 0;
     in_count = 0;
 
     while (fscanf(file, "%c", &input) != EOF) {
         
-        if(fr == 0)
+        if(free_count == 0)
             break;
 
         if(doubles[input-97])
@@ -111,7 +113,7 @@ int main() {
                     position[letters[idx]-97] = 0;
                 }
 
-                ++fr;
+                ++free_count;
             }
 
             letters[idx] = input;
@@ -129,14 +131,12 @@ int main() {
                     position[letters[idx]-97] = 0;
                 }
 
-                ++fr;
+                ++free_count;
             }
 
             letters[idx] = input;
-            --fr;
+            --free_count;
         }
-
-        printf("Free: %d\n", fr);
 
         if(++idx == 14) idx = 0;
         ++in_count;
@@ -144,7 +144,7 @@ int main() {
 
     fclose(file);
 
-    printf("%d\n", in_count);
+    printf("Elf Protocol Preamble sequence delay: %d\n", in_count);
 
     return 0;
 }
