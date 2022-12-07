@@ -82,11 +82,69 @@ int main() {
 
     fclose(file);
     
+    puts("--- Part 2 ---");
+
     file = fopen("input.txt", "r");
 
+    char letters[14] = {0};
+    char doubles[26] = {0};
+    char position[26] = {0};
 
+    int free_count = 14;
+    int idx = 0;
+    in_count = 0;
+
+    while (fscanf(file, "%c", &input) != EOF) {
+        
+        if(free_count == 0)
+            break;
+
+        if(doubles[input-97])
+        {
+            int pos = position[input-97];
+            letters[pos] = 0;
+            position[input-97] = idx;
+
+            if(letters[idx] != 0)
+            {
+                if(doubles[letters[idx]-97])
+                {
+                    doubles[letters[idx]-97] = 0;
+                    position[letters[idx]-97] = 0;
+                }
+
+                ++free_count;
+            }
+
+            letters[idx] = input;
+        }
+        else
+        {
+            ++doubles[input-97];
+            position[input-97] = idx;
+
+            if(letters[idx] != 0)
+            {
+                if(doubles[letters[idx]-97])
+                {
+                    doubles[letters[idx]-97] = 0;
+                    position[letters[idx]-97] = 0;
+                }
+
+                ++free_count;
+            }
+
+            letters[idx] = input;
+            --free_count;
+        }
+
+        if(++idx == 14) idx = 0;
+        ++in_count;
+    }
 
     fclose(file);
+
+    printf("Elf Protocol Preamble sequence delay: %d\n", in_count);
 
     return 0;
 }
