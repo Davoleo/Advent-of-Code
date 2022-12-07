@@ -2,6 +2,7 @@
 
 # absolute path to file tree folder
 FILE_TREE=$(pwd)/filetree
+mkdir -p "$FILE_TREE"
 
 MAX_SIZE=100000
 
@@ -107,7 +108,9 @@ day07_part2() {
 echo "** Advent of Code 2022 **"
 echo "### Day 07: No Space Left On Device"
 
-#build_filetree
+cleanup_tree
+
+build_filetree
 
 day07_part1
 
