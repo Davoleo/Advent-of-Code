@@ -5,8 +5,22 @@ FILE_TREE=$(pwd)/filetree
 
 MAX_SIZE=100000
 
+FILESYSTEM_SPACE=70000000
+UPDATE_SIZE=30000000
+USED_SPACE=0
+FREE_SPACE=0
+
 cleanup_tree() {
   rm -rf "${FILE_TREE:?}/*"
+}
+
+recursive_dir_size() {
+  local dir=$1
+  local sum=0
+  for file in $(find "$dir" -type f); do
+    sum=$((sum + $(cat "$file")))
+  done
+  echo $sum
 }
 
 build_filetree() {
@@ -53,15 +67,41 @@ day07_part1() {
   cd "$FILE_TREE" || exit 1
   total=0
   for dir in $(find . -type d); do
-    sum=0
-    for file in $(find "$dir" -type f); do
-      sum=$((sum + $(cat "$file")))
-    done
-    if [ $sum -le $MAX_SIZE ]; then
+    sum=$(recursive_dir_size "$dir")
+    if [ "$sum" -le $MAX_SIZE ]; then
       total=$((total + sum))
     fi
   done
   echo "Total space amount: $total"
+}
+
+day07_part2() {
+  echo "--- Part 2 ---"
+  cd "$FILE_TREE" || exit 1
+
+  for file in $(find . -type f); do
+    if [ -f "$file" ]; then
+      USED_SPACE=$((USED_SPACE + $(cat "$file")))
+    fi
+  done
+
+  FREE_SPACE=$((FILESYSTEM_SPACE - USED_SPACE))
+  echo "Needed Space: $((UPDATE_SIZE - FREE_SPACE))"
+
+  SIZES=$(for dir in $(find . -type d); do
+    recursive_dir_size "$dir"
+  done | sort --numeric-sort)
+
+  echo "recursive dir size calculation complete!"
+
+  set +x
+  for size in $SIZES; do
+    if [ "$size" -gt $((UPDATE_SIZE - FREE_SPACE)) ]; then
+      echo "Smallest directory size to delete: $size"
+      break
+    fi
+  done
+  set -x
 }
 
 echo "** Advent of Code 2022 **"
@@ -70,3 +110,5 @@ echo "### Day 07: No Space Left On Device"
 #build_filetree
 
 day07_part1
+
+day07_part2
