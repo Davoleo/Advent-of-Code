@@ -13,3 +13,6 @@ out
 *.exe
 *.class
 *.out
+
+# AoC 2022 specific
+2022/day07/filetree

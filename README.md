@@ -23,7 +23,8 @@ A simple repo to store my solutions to Advent of Code challenges
   3. Day 3: Written in Kotlin by Davoleo
   4. Day 4: Written in Kotlin by Davoleo
   5. Day 5: Written in C++ by Zambo & Davoleo
-  6. Day 6: Written in C by Davoleo [Part 1]
+  6. Day 6: Written in C by Davoleo [Part 1] & Zambo [Part 2]
+  7. Day 7: Written in Bash by Davoleo
     
 ### Viewing solutions
 
