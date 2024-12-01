@@ -25,6 +25,8 @@ A simple repo to store my solutions to Advent of Code challenges
   5. Day 5: Written in C++ by Zambo & Davoleo
   6. Day 6: Written in C by Davoleo [Part 1] & Zambo [Part 2]
   7. Day 7: Written in Bash by Davoleo
+- 2024:
+  1. Day 1: **Kotlin**
     
 ### Viewing solutions
 
