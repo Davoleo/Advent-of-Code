@@ -14,5 +14,8 @@ out
 *.class
 *.out
 
+# AoC input files
+**/input.txt
+
 # AoC 2022 specific
 2022/day07/filetree
