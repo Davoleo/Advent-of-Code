@@ -1,7 +1,8 @@
 # IDEA Stuff
-.idea
-*.iml
 out
+
+# Libraries
+lib
 
 # VS Folder
 .vs

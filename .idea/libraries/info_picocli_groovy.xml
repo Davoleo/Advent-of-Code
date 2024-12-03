@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="info.picocli.groovy" type="repository">
+    <properties maven-id="info.picocli:picocli-groovy:4.7.6" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/info/picocli/picocli-groovy/4.7.6/picocli-groovy-4.7.6.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/info/picocli/picocli/4.7.6/picocli-4.7.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
