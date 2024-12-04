@@ -1,18 +1,22 @@
+@file:Suppress("t")
+
 package day04
 
 import java.nio.file.Files
 import java.nio.file.Path
 
-val text = Files.readString(Path.of("2024", "day04", "test.txt"))
-val width = text.indexOf('\n')
-val height = text.length / (width+1)
+val text = Files.readString(Path.of("2024", "day04", "input.txt"))
+val width = text.indexOf('\n')+1
+val height = text.length / width
 
 const val pattern = "XMAS"
 
 fun main() {
 
     println("--- Part 1 ---")
-    println("matrix: $width x $height")
+    println("matrix: $height x $width")
+
+    println(text.length)
 
     var occurrences = 0
 
@@ -20,6 +24,7 @@ fun main() {
         for (j in 0 until width) {
             val index = i*width+j
             if (text[index] == 'X') {
+                //println("i=${index / width} j=${index % width}")
                 occurrences += starPatternMatching(index)
             }
         }
@@ -38,8 +43,7 @@ fun starPatternMatching(index: Int): Int {
 
     occurrences += diagonalPatternMatching(index, DiagonalAxis.DESCENDING)
 
-    //TODO : broken ascending logic
-    //occurrences += diagonalPatternMatching(index, DiagonalAxis.ASCENDING)
+    occurrences += diagonalPatternMatching(index, DiagonalAxis.ASCENDING)
 
     return occurrences
 }
