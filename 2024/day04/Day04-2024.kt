@@ -31,7 +31,22 @@ fun main() {
     }
 
     println("The number of XMAS occurrences in the text is: $occurrences")
-    //1922 is too low
+
+    println("--- Part 2 ---")
+
+    var xmases = 0
+    for (i in 1 until height-1) {
+        for (j in 1 until width-1) {
+            val index = i*width+j
+            if (text[index] == 'A') {
+                if (matchXMASes(index)) {
+                    xmases++
+                }
+            }
+        }
+    }
+
+    println("The number of X-MASes in the text is: $xmases")
 }
 
 fun starPatternMatching(index: Int): Int {
@@ -108,3 +123,17 @@ fun diagonalPatternMatching(index: Int, type: DiagonalAxis): Int {
         else -> 0
     }
 }
+
+fun matchXMASes(index: Int): Boolean {
+    val offsetAsc = 1*width-1
+    val offsetDesc = 1*width+1
+
+    val descReverse = text[index+offsetDesc] == 'M' && text[index-offsetDesc] == 'S'
+    val descForward = text[index-offsetDesc] == 'M' && text[index+offsetDesc] == 'S'
+
+    val ascReverse = text[index+offsetAsc] == 'M' && text[index-offsetAsc] == 'S'
+    val ascForward = text[index-offsetAsc] == 'M' && text[index+offsetAsc] == 'S'
+
+    return (descForward || descReverse) && (ascReverse || ascForward)
+}
+
