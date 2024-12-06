@@ -9,6 +9,8 @@ class Guard(var x: Int, var y: Int, var direction: Direction) {
         x += coords.second
     }
 
+    val pos get(): Pair<Int, Int> = y to x
+
     fun rotate() {
         direction = direction.rotate90Dg()
     }
@@ -46,19 +48,68 @@ fun main() {
 
     println("--- Part 1 ---")
 
-    val input = Files.readAllLines(Path.of("2024", "day06", "input.txt"))
+    val input = Files.readAllLines(Path.of("2024", "day06", "column.txt")).map(String::toCharArray)
+
+    println("${input.size} x ${input.first().size}")
 
 
     val guard = findGuard(input)
+    val ip = guard.pos
     println("Initial guard position: (${guard.y}, ${guard.x})")
     val tiles = simulateGuard(input, guard)
 
     println("The number of steps taken by the guard before going outbound is: $tiles")
-    //4662 too low
+    //1699
+
+    println("--- Part 2 ---")
+
+
+    val mInput = input.toMutableList()
+    val guardCheck = Guard(
+        x = ip.second,
+        y = ip.first,
+        direction = Direction.UP
+    )
+    var loops = 0
+    while (true) {
+
+        guardCheck.move()
+        println("guardCheck: ${guardCheck.y} ${guardCheck.x}, ${guardCheck.direction}")
+
+        if (!isGuardInbound(guardCheck, mInput))
+            break
+
+        val (newY, newX) = guardCheck.pos
+
+        if (mInput[newY][newX] == '.') {
+            mInput[newY][newX] = '#'
+            guardCheck.move(guardCheck.direction.opposite().vec)
+
+            val innerGuard = Guard(
+                x = guardCheck.x,
+                y = guardCheck.y,
+                direction = guardCheck.direction
+            )
+            if (loopCheckGuard(mInput, innerGuard)) {
+                println("obstacle in $newY $newX creates loop")
+                loops++
+            }
+
+            mInput[newY][newX] = '.'
+            guardCheck.move()
+        }
+        else if (mInput[newY][newX] == '#') {
+            guardCheck.move(guardCheck.direction.opposite().vec)
+            guardCheck.rotate()
+        }
+    }
+
+    println("The number of loops that can be created by adding 1 obstacle is: $loops")
+    //5142 too high
 
 }
 
-fun findGuard(map: List<String>): Guard {
+fun findGuard(map: List<CharArray>): Guard {
     for (line in map.indices) {
         val guardPos = map[line].indexOf('^')
         if (guardPos != -1) {
@@ -73,16 +124,15 @@ fun findGuard(map: List<String>): Guard {
     throw IllegalStateException("Guard not found")
 }
 
-fun simulateGuard(map: List<String>, guard: Guard): Int {
-    var char: Char
-    val tilesSteppedOn: MutableSet<Pair<Int, Int>> = mutableSetOf()
+fun simulateGuard(map: List<CharArray>, guard: Guard): Int {
+    val tilesSteppedOn: MutableSet<Pair<Int, Int>> = mutableSetOf(guard.pos)
 
     while (true) {
         guard.move()
         if (!isGuardInbound(guard, map))
             break
 
-        char = map[guard.y][guard.x]
+        val char = map[guard.y][guard.x]
 
 
         println("guard pos: (${guard.y}, ${guard.x}) -> char: $char, tiles: ${tilesSteppedOn.size}")
@@ -94,14 +144,47 @@ fun simulateGuard(map: List<String>, guard: Guard): Int {
             continue
         }
         else if (char == '.' || char == '^') {
-            tilesSteppedOn.add(guard.y to guard.x)
+            tilesSteppedOn.add(guard.pos)
         }
     }
 
     return tilesSteppedOn.size
 }
 
-fun isGuardInbound(guard: Guard, map: List<String>): Boolean {
-    return guard.x < map.first().length && guard.x >= 0
+fun loopCheckGuard(map: List<CharArray>, guard: Guard): Boolean {
+
+    println("-----")
+    map.forEach { line -> println(line.joinToString("")) }
+    println("-----")
+
+    val history: MutableSet<Triple<Int, Int, Direction>> = mutableSetOf(Triple(guard.y, guard.x, guard.direction))
+
+    while (true) {
+        guard.move()
+        if (!isGuardInbound(guard, map))
+            break
+
+        val char = map[guard.y][guard.x]
+
+        //Obstacle
+        if (char == '#') {
+            guard.move(guard.direction.opposite().vec)
+            guard.rotate()
+            continue
+        }
+        else if (char == '.' || char == '^') {
+            val existed = !history.add(Triple(guard.y, guard.x, guard.direction))
+            if (existed) {
+                return true
+            }
+        }
+    }
+
+    return false
+
+}
+
+fun isGuardInbound(guard: Guard, map: List<CharArray>): Boolean {
+    return guard.x < map.first().size && guard.x >= 0
             && guard.y < map.size && guard.y >= 0
 }
