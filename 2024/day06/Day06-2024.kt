@@ -16,11 +16,15 @@ class Guard(var x: Int, var y: Int, var direction: Direction) {
     }
 }
 
+class MapCell(val char: Char, val y: Int, val x: Int);
+typealias GuardAction = (MapCell) -> Boolean;
+
 enum class Direction(val vec: Pair<Int, Int>) {
     UP(Pair(-1, 0)),
     RIGHT(Pair(0, 1)),
     DOWN(Pair(1, 0)),
     LEFT(Pair(0, -1));
+
 
 
     fun opposite(): Direction {
@@ -42,13 +46,14 @@ enum class Direction(val vec: Pair<Int, Int>) {
     }
 }
 
+
 fun main() {
     println("*** Advent of Code ***")
     println("### Day 06: Guard Gallivant ###")
 
     println("--- Part 1 ---")
 
-    val input = Files.readAllLines(Path.of("2024", "day06", "column.txt")).map(String::toCharArray)
+    val input = Files.readAllLines(Path.of("2024", "day06", "input.txt")).map(String::toCharArray)
 
     println("${input.size} x ${input.first().size}")
 
@@ -70,37 +75,45 @@ fun main() {
         direction = Direction.UP
     )
     var loops = 0
-    while (true) {
 
-        guardCheck.move()
-        println("guardCheck: ${guardCheck.y} ${guardCheck.x}, ${guardCheck.direction}")
+    val alreadyPlaced: MutableSet<Pair<Int, Int>> = mutableSetOf()
 
-        if (!isGuardInbound(guardCheck, mInput))
-            break
+    //this simulation is to follow the normal path and place obstacles each time
+    loopCheckGuard(mInput, guardCheck) { nextMapCell ->
 
-        val (newY, newX) = guardCheck.pos
+        //skip possible obstacle simulation if there is a wall, starting position
+        //fuck this shit we need to avoid already placed obstacles.
+        if (nextMapCell.char == '#' || nextMapCell.char == '^' || !alreadyPlaced.add(Pair(nextMapCell.y, nextMapCell.x)))
+            return@loopCheckGuard false
 
-        if (mInput[newY][newX] == '.') {
-            mInput[newY][newX] = '#'
-            guardCheck.move(guardCheck.direction.opposite().vec)
+        val history: MutableSet<Triple<Int, Int, Direction>> = mutableSetOf()
 
-            val innerGuard = Guard(
-                x = guardCheck.x,
-                y = guardCheck.y,
-                direction = guardCheck.direction
-            )
-            if (loopCheckGuard(mInput, innerGuard)) {
-                println("obstacle in $newY $newX creates loop")
-                loops++
+        //place fake wall
+        mInput[nextMapCell.y][nextMapCell.x] = '#'
+        //create guard
+        val simulatedGuard = Guard(guardCheck.x, guardCheck.y, guardCheck.direction)
+        //start simulation to find loop
+        val withoutLoop = loopCheckGuard(mInput, simulatedGuard) simLoop@{ _ ->
+
+            val added = history.add(Triple(simulatedGuard.y, simulatedGuard.x, simulatedGuard.direction))
+
+            //this ends the loop simulation, when the guard visits a past cell
+            if (!added) {
+                println("-----")
+                mInput.forEach { line -> println(line.joinToString("")) }
+                println("-----")
+                return@simLoop true;
             }
+            return@simLoop false;
+        }
 
-            mInput[newY][newX] = '.'
-            guardCheck.move()
-        }
-        else if (mInput[newY][newX] == '#') {
-            guardCheck.move(guardCheck.direction.opposite().vec)
-            guardCheck.rotate()
-        }
+        if (!withoutLoop)
+            loops++
+
+        //this is for checking for loops
+        mInput[nextMapCell.y][nextMapCell.x] = '.'
+
+        return@loopCheckGuard false;
     }
 
     println("The number of loops that can be created by adding 1 obstacle is: $loops")
@@ -124,6 +137,8 @@ fun findGuard(map: List<CharArray>): Guard {
     throw IllegalStateException("Guard not found")
 }
 
+
+
 fun simulateGuard(map: List<CharArray>, guard: Guard): Int {
     val tilesSteppedOn: MutableSet<Pair<Int, Int>> = mutableSetOf(guard.pos)
 
@@ -135,7 +150,7 @@ fun simulateGuard(map: List<CharArray>, guard: Guard): Int {
         val char = map[guard.y][guard.x]
 
 
-        println("guard pos: (${guard.y}, ${guard.x}) -> char: $char, tiles: ${tilesSteppedOn.size}")
+        //println("guard pos: (${guard.y}, ${guard.x}) -> char: $char, tiles: ${tilesSteppedOn.size}")
 
         //Obstacle
         if (char == '#') {
@@ -151,38 +166,40 @@ fun simulateGuard(map: List<CharArray>, guard: Guard): Int {
     return tilesSteppedOn.size
 }
 
-fun loopCheckGuard(map: List<CharArray>, guard: Guard): Boolean {
 
-    println("-----")
-    map.forEach { line -> println(line.joinToString("")) }
-    println("-----")
 
-    val history: MutableSet<Triple<Int, Int, Direction>> = mutableSetOf(Triple(guard.y, guard.x, guard.direction))
+fun loopCheckGuard(map: List<CharArray>, guard: Guard, onTurn: GuardAction): Boolean {
 
     while (true) {
-        guard.move()
-        if (!isGuardInbound(guard, map))
-            break
 
-        val char = map[guard.y][guard.x]
+        val nextMapCell = peekNextCell(guard, map) ?: break;
 
-        //Obstacle
-        if (char == '#') {
-            guard.move(guard.direction.opposite().vec)
+        if(onTurn.invoke(nextMapCell))
+            return false
+        //Is a WALL
+        if (nextMapCell.char == '#')
             guard.rotate()
-        }
-        else if (char == '.' || char == '^') {
-            val existed = !history.add(Triple(guard.y, guard.x, guard.direction))
-            if (existed) {
-                return true
-            }
-        }
+        else
+            guard.move()
+
     }
 
-    return false
+    return true
 
 }
 
+fun peekNextCell(guard: Guard, map: List<CharArray>): MapCell? {
+
+    val nextY = guard.y + guard.direction.vec.first
+    val nextX = guard.x + guard.direction.vec.second
+
+    val inbound = nextX < map.first().size && nextX >= 0
+            && nextY < map.size && nextY >= 0
+    if (inbound)
+        return MapCell(map[nextY][nextX], nextY, nextX)
+    return null
+
+}
 fun isGuardInbound(guard: Guard, map: List<CharArray>): Boolean {
     return guard.x < map.first().size && guard.x >= 0
             && guard.y < map.size && guard.y >= 0
