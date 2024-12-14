@@ -59,7 +59,6 @@ fun main() {
     val tiles = simulateGuard(input, guard)
 
     println("The number of steps taken by the guard before going outbound is: $tiles")
-    //1699
 
     println("--- Part 2 ---")
 
@@ -106,6 +105,7 @@ fun main() {
 
     println("The number of loops that can be created by adding 1 obstacle is: $loops")
     //5142 too high
+    //1699
 
 }
 
@@ -170,7 +170,6 @@ fun loopCheckGuard(map: List<CharArray>, guard: Guard): Boolean {
         if (char == '#') {
             guard.move(guard.direction.opposite().vec)
             guard.rotate()
-            continue
         }
         else if (char == '.' || char == '^') {
             val existed = !history.add(Triple(guard.y, guard.x, guard.direction))
