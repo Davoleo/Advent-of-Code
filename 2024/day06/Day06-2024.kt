@@ -118,7 +118,7 @@ fun main() {
 
     println("The number of loops that can be created by adding 1 obstacle is: $loops")
     //5142 too high
-    //1699
+    //1699 too high
 
 }
 

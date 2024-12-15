@@ -9,7 +9,6 @@
 #include <cmath>
 #include <algorithm>
 
-
 struct PosYX
 {
     int y;
@@ -34,9 +33,9 @@ struct PosYX
     }
 };
 
-struct MyHashFunction {
+struct HashViaString {
     size_t operator()(const PosYX& t) const{
-        return std::hash<std::string>{}(t.x + "," + t.y);
+        return std::hash<std::string>{}(std::to_string(t.x) + "," + (std::to_string(t.y)));
     }
 };
 
@@ -62,7 +61,7 @@ static void PrintMap(void)
     }
 }
 
-static void CalculateAntinodes(std::unordered_set<PosYX, MyHashFunction>& antinodes)
+static void CalculateAntinodes(std::unordered_set<PosYX, HashViaString>& antinodes)
 {
     for(auto entry : coordsMap)
     {
@@ -123,13 +122,13 @@ int main(void)
 
     std::cout << "--------------------------------" << std::endl;
 
-    std::unordered_set<PosYX, MyHashFunction> antinodes;
+    std::unordered_set<PosYX, HashViaString> antinodes;
     CalculateAntinodes(antinodes);
 
     // for(auto node : antinodes)
     //     std::cout << "{" << node.y << "," << node.x << "}\n";
 
-    std::cout << "The number of unique locations with the map that contain an antinodes is:" << antinodes.size() << std::endl;
+    std::cout << "The number of unique locations with the map that contain an antinodes is: " << antinodes.size() << std::endl;
 
     return 0;
 }
